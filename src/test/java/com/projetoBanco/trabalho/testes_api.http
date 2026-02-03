@@ -1,0 +1,42 @@
+### 1. Cadastrar um Docente (Necessário para ser coordenador)
+POST http://localhost:8080/api/participantes/docentes
+Content-Type: application/json
+
+{
+    "nome": "Dr. Alan Turing",
+    "email": "turing@universidade.com",
+    "cpf": "11122233344",
+    "departamento": "Ciência da Computação"
+}
+
+###
+
+### 2. Cadastrar um Projeto (Usando o Docente acima)
+# Nota: O campo "coordenador" precisa do ID que o banco gerou (provavelmente 1)
+POST http://localhost:8080/api/projetos
+Content-Type: application/json
+
+{
+    "codigoUnico": "PROJ-IA-2026",
+    "titulo": "Pesquisa em Redes Neurais",
+    "descricao": "Estudo avançado de modelos generativos",
+    "dataInicio": "2026-02-01",
+    "situacao": "ATIVO",
+    "coordenador": { "id": 1 }
+}
+
+###
+
+### 3. Vincular um Participante ao Projeto
+# Usando os parâmetros que definimos no VinculoController
+POST http://localhost:8080/api/vinculos/vincular?codigoProjeto=PROJ-IA-2026&cpfParticipante=11122233344&funcao=Coordenador Geral
+
+###
+
+### 4. Buscar Participantes de um Projeto pelo Código
+GET http://localhost:8080/api/vinculos/projeto/PROJ-IA-2026/participantes
+
+###
+
+### 5. Consultar Meus Projetos (Pelo CPF)
+GET http://localhost:8080/api/vinculos/participante/11122233344/projetos
