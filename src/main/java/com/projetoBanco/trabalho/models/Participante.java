@@ -18,6 +18,8 @@ public abstract class Participante {
 
     private String nome;
     private String email;
+
+    @Column(name = "cpf", unique = true, nullable = false)
     private String cpf;
 }
 
