@@ -21,5 +21,7 @@ public abstract class Participante {
 
     @Column(name = "cpf", unique = true, nullable = false)
     private String cpf;
+
+    private String senha;
 }
 

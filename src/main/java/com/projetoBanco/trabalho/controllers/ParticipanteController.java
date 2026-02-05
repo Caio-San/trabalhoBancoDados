@@ -5,6 +5,7 @@ import com.projetoBanco.trabalho.repositories.ParticipanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.projetoBanco.trabalho.dto.LoginDTO;
 
 import java.util.List;
 
@@ -16,6 +17,30 @@ public class ParticipanteController {
 
     @Autowired
     private ParticipanteRepository participanteRepository;
+
+
+    // Login (autenticação básica) com cpf e senha, utilizando dto
+   @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        return participanteRepository.findByCpf(loginDTO.getCpf())
+                .map(participante -> {
+                    if (participante.getSenha().equals(loginDTO.getSenha())) {
+                        return ResponseEntity.ok(participante);
+                    } else {
+                        // Senha não bate
+                        return ResponseEntity.status(401).body("Senha incorreta.");
+                    }
+                })
+                // CPF não encontrado
+                .orElse(ResponseEntity.status(401).body("Usuário não encontrado."));
+    }
+
+    // Logout
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        // apenas para sinalização, o frontend deve limpar o token/sessão
+        return ResponseEntity.ok("Logout realizado com sucesso. O frontend deve limpar o token/sessão.");
+    }
 
     // 2. Cadastrar Docente
     @PostMapping("/docentes")
