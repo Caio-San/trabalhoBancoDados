@@ -8,4 +8,6 @@ public interface FinanciamentoRepository extends JpaRepository<Financiamento, Lo
     //Buscar Financiamentos por Agência
     List<Financiamento> findByAgenciaFinanciadorContainingIgnoreCase(String agencia);
 
+    // Buscar Financiamentos por projeto apoiado codigo unico
+    List<Financiamento> findByProjeto_CodigoUnico(String codigoUnico);
 }

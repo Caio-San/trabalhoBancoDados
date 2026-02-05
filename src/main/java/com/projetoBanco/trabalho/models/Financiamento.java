@@ -20,5 +20,5 @@ public class Financiamento {
 
     // Relacionamento inverso com Projeto (0..1)
     @OneToOne(mappedBy = "financiamento")
-    private Projeto projetoApoiado;
+    private Projeto projeto;
 }

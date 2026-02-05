@@ -6,7 +6,8 @@ import lombok.*;
 
 
 @Entity
-@Getter @Setter
+@Getter 
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Docente extends Participante {

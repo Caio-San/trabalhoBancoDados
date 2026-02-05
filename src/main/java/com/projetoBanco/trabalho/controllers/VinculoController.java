@@ -68,4 +68,41 @@ public class VinculoController {
     public List<Participante> listarPolivalentes() {
         return vinculoRepository.findParticipantesEmMultiplosProjetos();
     }
+
+    // desfazer vinculo
+    @DeleteMapping("/desvincular")
+    public ResponseEntity<?> desfazerVinculo(
+            @RequestParam String codigoProjeto,
+            @RequestParam String cpfParticipante) {
+
+        // 1. Busca o Projeto pelo Código Único
+        Projeto projeto = projetoRepository.findByCodigoUnico(codigoProjeto)
+                .orElse(null);
+
+        // 2. Busca o Participante pelo CPF
+        Participante participante = participanteRepository.findByCpf(cpfParticipante)
+                .orElse(null);
+
+        // Validação: Se um dos dois não existir, retorna erro
+        if (projeto == null || participante == null) {
+            return ResponseEntity.badRequest().body("Projeto ou Participante não encontrado.");
+        }
+
+        // 3. Busca o vínculo existente
+        List<VinculoParticipacao> vinculos = vinculoRepository.findByProjeto_CodigoUnico(codigoProjeto);
+        VinculoParticipacao vinculoParaRemover = null;
+        for (VinculoParticipacao v : vinculos) {
+            if (v.getParticipante().getCpf().equals(cpfParticipante)) {
+                vinculoParaRemover = v;
+                break;
+            }
+        }
+
+        if (vinculoParaRemover == null) {
+            return ResponseEntity.badRequest().body("Vínculo não encontrado.");
+        }
+
+        vinculoRepository.delete(vinculoParaRemover);
+        return ResponseEntity.ok("Vínculo removido com sucesso!");
+    }
 }

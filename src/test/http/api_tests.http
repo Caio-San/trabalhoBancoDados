@@ -1,0 +1,94 @@
+### 1. Cadastrar um Docente (Necessário para ser coordenador)
+POST http://localhost:8080/api/participantes/docentes
+Content-Type: application/json
+
+{
+    "nome": "Dr. Alan Turing",
+    "email": "turing@universidade.com",
+    "cpf": "11122233344",
+    "departamento": "Ciência da Computação"
+}
+
+### 2. Atualizar Docente por CPF (PUT)
+PUT http://localhost:8080/api/participantes/docentes/cpf/11122233344
+Content-Type: application/json
+
+{
+    "nome": "Dr. Alan M. Turing",
+    "email": "alan.turing@universidade.com",
+    "departamento": "Departamento de Computação"
+}
+
+### 3. Buscar Docente por CPF (GET)
+GET http://localhost:8080/api/participantes/cpf/11122233344
+
+### 4. Deletar Docente por CPF (DELETE)
+DELETE http://localhost:8080/api/participantes/docentes/cpf/11122233344
+
+### 5. Cadastrar um Projeto (Usando o Docente acima)
+# ATENÇÃO: ajuste o campo coordenador.id para o ID correto do docente no seu banco
+POST http://localhost:8080/api/projetos
+Content-Type: application/json
+
+{
+    "codigoUnico": "PROJ-IA-2026",
+    "titulo": "Pesquisa em Redes Neurais",
+    "descricao": "Estudo avançado de modelos generativos",
+    "dataInicio": "2026-02-01",
+    "situacao": "ATIVO",
+    "coordenador": { "id": 2 }
+}
+
+### 6. Atualizar Projeto por Código (PUT)
+PUT http://localhost:8080/api/projetos/codigo/PROJ-IA-2026
+Content-Type: application/json
+
+{
+    "titulo": "Pesquisa em Redes Neurais - Atualizado",
+    "descricao": "Descrição atualizada",
+    "dataInicio": "2026-02-01",
+    "dataFim": "2026-12-31",
+    "situacao": "CONCLUIDO"
+}
+
+### 7. Deletar Projeto por Código (DELETE)
+DELETE http://localhost:8080/api/projetos/codigo/PROJ-IA-2026
+
+### 8. Vincular um Participante ao Projeto (POST)
+POST http://localhost:8080/api/vinculos/vincular?codigoProjeto=PROJ-IA-2026&cpfParticipante=11122233344&funcao=Coordenador%20Geral
+
+### 9. Buscar Participantes de um Projeto pelo Código (GET)
+GET http://localhost:8080/api/vinculos/projeto/PROJ-IA-2026/participantes
+
+### 10. Consultar Meus Projetos (Pelo CPF) (GET)
+GET http://localhost:8080/api/vinculos/participante/11122233344/projetos
+
+### 11. Listar todos os participantes (GET)
+GET http://localhost:8080/api/participantes
+
+### 12. Criar Discente (POST)
+POST http://localhost:8080/api/participantes/discentes
+Content-Type: application/json
+
+{
+    "nome": "Maria Estudante",
+    "email": "maria@universidade.com",
+    "cpf": "22233344455",
+    "curso": "Engenharia"
+}
+
+### 13. Criar Técnico (POST)
+POST http://localhost:8080/api/participantes/tecnicos
+Content-Type: application/json
+
+{
+    "nome": "José Técnico",
+    "email": "jose@instituto.com",
+    "cpf": "33344455566",
+    "setor": "Laboratório"
+}
+
+# Dicas:
+# - Ajuste os CPFs e IDs conforme seu banco.
+# - Use o plugin REST Client do VS Code para executar este arquivo (.http).
+# - Se um endpoint retornar 404, verifique se o recurso existe e se o valor (CPF / código) está correto.
