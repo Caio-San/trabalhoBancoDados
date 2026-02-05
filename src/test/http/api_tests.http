@@ -5,12 +5,12 @@ Content-Type: application/json
 {
     "nome": "Dr. Alan Turing",
     "email": "turing@universidade.com",
-    "cpf": "11122233344",
+    "cpf": "11122255555",
     "departamento": "Ciência da Computação"
 }
 
 ### 2. Atualizar Docente por CPF (PUT)
-PUT http://localhost:8080/api/participantes/docentes/cpf/11122233344
+PUT http://localhost:8080/api/participantes/docentes/cpf/11122255555
 Content-Type: application/json
 
 {
@@ -20,10 +20,10 @@ Content-Type: application/json
 }
 
 ### 3. Buscar Docente por CPF (GET)
-GET http://localhost:8080/api/participantes/cpf/11122233344
+GET http://localhost:8080/api/participantes/cpf/11122255555
 
 ### 4. Deletar Docente por CPF (DELETE)
-DELETE http://localhost:8080/api/participantes/docentes/cpf/11122233344
+DELETE http://localhost:8080/api/participantes/docentes/cpf/11122255555
 
 ### 5. Cadastrar um Projeto (Usando o Docente acima)
 # ATENÇÃO: ajuste o campo coordenador.id para o ID correto do docente no seu banco
@@ -36,7 +36,7 @@ Content-Type: application/json
     "descricao": "Estudo avançado de modelos generativos",
     "dataInicio": "2026-02-01",
     "situacao": "ATIVO",
-    "coordenador": { "id": 2 }
+    "coordenador": { "id":  }
 }
 
 ### 6. Atualizar Projeto por Código (PUT)
