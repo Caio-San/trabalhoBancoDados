@@ -1,5 +1,6 @@
 package com.projetoBanco.trabalho.controllers;
 
+import com.projetoBanco.trabalho.dto.VinculoDTO;
 import com.projetoBanco.trabalho.models.*;
 import com.projetoBanco.trabalho.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +23,17 @@ public class VinculoController {
     @Autowired
     private ParticipanteRepository participanteRepository;
 
-    // 6. Vincular Participante a Projeto usando Identificadores de Negócio
+
+
     @PostMapping("/vincular")
-    public ResponseEntity<?> criarVinculo(
-            @RequestParam String codigoProjeto,
-            @RequestParam String cpfParticipante,
-            @RequestParam String funcao) {
+    public ResponseEntity<?> criarVinculoComBody(@RequestBody VinculoDTO vinculoDTO) {
 
         // 1. Busca o Projeto pelo Código Único
-        Projeto projeto = projetoRepository.findByCodigoUnico(codigoProjeto)
+        Projeto projeto = projetoRepository.findByCodigoUnico(vinculoDTO.getCodigoProjeto())
                 .orElse(null);
 
         // 2. Busca o Participante pelo CPF
-        Participante participante = participanteRepository.findByCpf(cpfParticipante)
+        Participante participante = participanteRepository.findByCpf(vinculoDTO.getCpfParticipante())
                 .orElse(null);
 
         // Validação: Se um dos dois não existir, retorna erro
@@ -46,12 +45,13 @@ public class VinculoController {
         VinculoParticipacao novoVinculo = new VinculoParticipacao();
         novoVinculo.setProjeto(projeto);
         novoVinculo.setParticipante(participante);
-        novoVinculo.setFuncaoDesempenhada(funcao);
+        novoVinculo.setFuncaoDesempenhada(vinculoDTO.getFuncaoDesempenhada());
         novoVinculo.setDataEntrada(LocalDate.now()); // Entrada hoje por padrão
 
         vinculoRepository.save(novoVinculo);
         return ResponseEntity.ok("Vínculo criado com sucesso!");
     }
+
 
     // 8. Consultar Participantes de um Projeto (Por Código Único)
     @GetMapping("/projeto/{codigo}/participantes")
