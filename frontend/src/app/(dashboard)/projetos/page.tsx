@@ -14,24 +14,35 @@ export default function ProjetosPage() {
   const isDocente = user?.departamento !== undefined;
 
   useEffect(() => {
-    const carregarProjetosPessoais = async () => {
-      if (!user?.cpf) return;
-      
-      try {
-        const dados = await api.listarMeusProjetos(user.cpf);
-        setProjetos(dados);
-      } catch (error) {
-        console.error("Erro ao carregar os seus projetos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const carregarProjetosDoUsuario = async () => {
+    try {
+      // 1. Recupera o usuário da sessão (mesma lógica usada no cadastro)
+      const usuarioSalvo = sessionStorage.getItem('usuarioLogado');
+      const dadosSessao = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+      const cpf = dadosSessao?.usuario?.cpf;
 
-    carregarProjetosPessoais();
-  }, [user?.cpf]);
+      if (!cpf) {
+        console.error("Usuário não logado ou CPF não encontrado");
+        setLoading(false);
+        return;
+      }
+
+      // 2. Chama o novo endpoint passando o CPF
+      const dados = await api.listarProjetosPorParticipante(cpf);
+      console.log("Projetos carregados do vínculo:", dados);
+      setProjetos(dados);
+    } catch (error) {
+      console.error("Erro ao carregar projetos do vínculo:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  carregarProjetosDoUsuario();
+}, []);
 
   const handleExcluir = async (codigo: string) => {
-    if (!confirm("Tem a certeza que deseja excluir este projeto? [UC03]")) return;
+    if (!confirm("Tem a certeza que deseja excluir este projeto?")) return;
     
     try {
       const res = await api.excluirProjeto(codigo);
@@ -58,7 +69,7 @@ export default function ProjetosPage() {
       <header className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-[#2c3e50]">Meus Projetos</h2>
-          <p className="text-sm text-gray-500">Projetos aos quais você está associado [UC14]</p>
+          <p className="text-sm text-gray-500">Projetos aos quais você está associado</p>
         </div>
 
         {isDocente && (
@@ -114,7 +125,7 @@ export default function ProjetosPage() {
                       <Link 
                         href={`/projetos/${projeto.codigoUnico}/equipe`} 
                         className="p-2 text-gray-400 hover:text-[#3498db]" 
-                        title="Gerir Equipe [UC06]"
+                        title="Gerir Equipe"
                       >
                         <span className="material-icons">groups</span>
                       </Link>
@@ -122,7 +133,7 @@ export default function ProjetosPage() {
                       <button 
                         onClick={() => handleExcluir(projeto.codigoUnico)} 
                         className="p-2 text-gray-400 hover:text-red-500" 
-                        title="Excluir [UC03]"
+                        title="Excluir"
                       >
                         <span className="material-icons">delete</span>
                       </button>

@@ -90,7 +90,7 @@ export default function EditarProjetoPage() {
         </button>
         <div>
           <h2 className="text-2xl font-bold text-[#2c3e50]">Editar Projeto: {codigo}</h2>
-          <p className="text-sm text-gray-500">Atualize as informações da pesquisa acadêmica [UC03]</p>
+          <p className="text-sm text-gray-500">Atualize as informações da pesquisa acadêmica</p>
         </div>
       </header>
 

@@ -199,7 +199,17 @@ export const api = {
       method: 'POST'
     }),
 
-    // Adicione ou atualize no seu objeto api
-listarMeusProjetos: (cpf: string): Promise<Projeto[]> => 
-  fetch(`${API_BASE}/vinculos/participante/${cpf}/projetos`).then(res => res.json()),
+  listarProjetosPorParticipante: (cpf: string): Promise<Projeto[]> => 
+    fetch(`${API_BASE}/vinculos/participante/${cpf}/projetos`).then(res => res.json()),
+
+  atualizarFinanciamentoPorProjeto: (codigoProjeto: string, dados: FinanciamentoDTO) => {
+    if (!codigoProjeto) {
+      console.error("Erro: codigoProjeto não fornecido para a API");
+    }
+    return fetch(`${API_BASE}/financiamentos/projeto/codigo/${codigoProjeto}`, {
+      method: 'PUT', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+  },
 };
