@@ -41,17 +41,16 @@ Content-Type: application/json
   "cpfCoordenador": "11122255555"
 }
 ### 6. Atualizar Projeto por Código (PUT)
-PUT http://localhost:8080/api/projetos/codigo/PROJ-IA-2026
+PUT http://localhost:8080/api/projetos/codigo/PROJ-2026-SEM-VERBA
 Content-Type: application/json
 
-{
-    "codigoUnico": "PIBIC-2026",
-    "titulo": "Estudo de Algoritmos Atualizado",
+{   
+    "titulo": "Pesquisa Teórica Exploratória",
     "descricao": "Pesquisa sobre eficiência em Java - Versão 2",
     "dataInicio": "2026-02-01",
     "dataFim": "2026-12-31",
     "situacao": "CONCLUIDO",
-    "cpfCoordenador": "12345678900",
+    "cpfCoordenador": "11122255555",
     "agenciaFinanciador": "CNPq"
 }
 
@@ -73,13 +72,33 @@ GET http://localhost:8080/api/financiamentos
 DELETE http://localhost:8080/api/projetos/codigo/PROJ-IA-2026
 
 ### 8. Vincular um Participante ao Projeto (POST)
-POST http://localhost:8080/api/vinculos/vincular?codigoProjeto=PROJ-IA-2026&cpfParticipante=11122233344&funcao=Coordenador%20Geral
+POST http://localhost:8080/api/vinculos/vincular
+Content-Type: application/json
+
+{
+  "codigoProjeto": "PROJ-2026-SEM-VERBA",
+  "cpfParticipante": "11122255555",
+  "funcao": "COLABORADOR"
+}
+
+
+
+#### Vincular outro Participante ao Projeto (POST)
+POST http://localhost:8080/api/vinculos/vincular   
+Content-Type: application/json
+
+{
+  "codigoProjeto": "PROJ-2026-SEM-VERBA",
+  "cpfParticipante": "22233344459",
+  "funcao": "DISCENTE"
+}
+
 
 ### 9. Buscar Participantes de um Projeto pelo Código (GET)
 GET http://localhost:8080/api/vinculos/projeto/PROJ-IA-2026/participantes
 
 ### 10. Consultar Meus Projetos (Pelo CPF) (GET)
-GET http://localhost:8080/api/vinculos/participante/11122233344/projetos
+GET http://localhost:8080/api/vinculos/participante/11122255555/projetos
 
 ### 11. Listar todos os participantes (GET)
 GET http://localhost:8080/api/participantes

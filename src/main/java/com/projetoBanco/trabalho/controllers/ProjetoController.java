@@ -134,6 +134,26 @@ public class ProjetoController {
                         projetoExistente.setCoordenador(novoCoordenadorOpt.get());
                     }
 
+                    // Atualiza o financiamento se fornecido
+                    if (dto.getAgenciaFinanciador() != null && !dto.getAgenciaFinanciador().isEmpty()) {
+                        Optional<Financiamento> finOpt = financiamentoRepository.findByAgenciaFinanciador(dto.getAgenciaFinanciador());
+                        
+                        if (finOpt.isPresent()) {
+                            Financiamento financiamentoExistente = finOpt.get();
+                            
+                            // Verifica se esse financiamento já não está em outro projeto
+                            if (financiamentoExistente.getProjeto() != null && !financiamentoExistente.getProjeto().getId().equals(projetoExistente.getId())) {
+                                return ResponseEntity.status(HttpStatus.CONFLICT)
+                                        .body("A agência '" + dto.getAgenciaFinanciador() + "' já está vinculada a outro projeto.");
+                            }
+                            
+                            projetoExistente.setFinanciamento(financiamentoExistente);
+                        } else {
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                    .body("Agência de financiamento não encontrada: " + dto.getAgenciaFinanciador());
+                        }
+                    }
+
                     // Salva as alterações
                     Projeto projetoAtualizado = projetoRepository.save(projetoExistente);
                     return ResponseEntity.ok(projetoAtualizado);
