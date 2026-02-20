@@ -1,0 +1,36 @@
+package com.projetoBanco.trabalho.models;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Financiamento {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String agenciaFinanciador;
+    private String tipoFomento;
+    private Double valorTotal;
+
+    // ADICIONE ESTES CAMPOS PARA AS DATAS FUNCIONAREM
+    private LocalDate periodoVigenciaInicio;
+    private LocalDate periodoVigenciaFim;
+    @JsonIgnore
+    @OneToOne(mappedBy = "financiamento")
+    private Projeto projeto;
+
+    @JsonProperty("codigoProjeto")
+    public String getCodigoProjeto() {
+        return projeto != null ? projeto.getCodigoUnico() : null;
+    }
+}
